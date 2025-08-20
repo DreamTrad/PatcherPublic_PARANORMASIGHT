@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
     <file>ressource/DreamteamLogo.ico</file>
+    <file>ressource/logo_game_patcher.png</file>
   </qresource>
 </RCC>
