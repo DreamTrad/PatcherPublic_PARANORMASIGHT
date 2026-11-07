@@ -7,17 +7,13 @@ Description : call tool to repack the game.
 
 # == Imports ==================================================================
 
+import shutil
 from logging import Logger
 from pathlib import Path
-import shutil
-import subprocess
 
 # -------------------- Import Lib User -------------------
-
 from patcher import config
-from patcher.utils import xdelta
 from patcher.utils.logger import get_logger
-
 
 # == Global Variables =========================================================
 
@@ -25,6 +21,7 @@ _logger: Logger = get_logger(__name__)
 
 
 # == Functions ================================================================
+
 
 def repack() -> None:
     """whole patching process."""

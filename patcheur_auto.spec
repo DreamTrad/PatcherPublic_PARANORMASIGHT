@@ -1,6 +1,3 @@
-# -*- mode: python ; coding: utf-8 -*-
-
-
 import os
 import shutil
 import sys
@@ -13,10 +10,12 @@ exe_name = getattr(config, "EXE_NAME", "Patcheur Auto")
 
 dist_dir = "dist"
 
+
 def copy_folder(src: str, dst: str) -> None:
     if os.path.exists(dst):
         shutil.rmtree(dst)
     shutil.copytree(src, dst)
+
 
 def remove_gitkeep(folder: str) -> None:
     gitkeep_path = os.path.join(folder, ".gitkeep")
@@ -38,7 +37,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['patcher\\main.py'],
+    ["patcher/main.py"],
     pathex=[],
     binaries=[],
     datas=[],
@@ -74,5 +73,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='resources/dreamtrad-logo.png',
+    icon="resources/dreamtrad-logo.png",
 )

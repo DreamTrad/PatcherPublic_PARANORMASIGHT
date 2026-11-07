@@ -1,0 +1,56 @@
+name: Build Patcher
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Linux Qt libraries
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1 libgl1 libxkbcommon-x11-0 libxcb-cursor0
+
+      - name: Install Python dependencies
+        run: |
+          python -c "from pathlib import Path; Path('requirements-ci.txt').write_text(Path('requirements.txt').read_text(encoding='utf-16'), encoding='utf-8')"
+          python -m pip install -r requirements-ci.txt
+
+      - name: Build with PyInstaller
+        run: python -m PyInstaller --noconfirm patcheur_auto.spec
+
+      - name: Include patch and tool folders
+        run: >-
+          python -c "import shutil; from pathlib import Path; output = Path('dist'); [shutil.copytree(folder, output / folder, dirs_exist_ok=True, ignore=shutil.ignore_patterns('.gitkeep')) for folder in ('patch', 'tool') if Path(folder).is_dir()]"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: patcher-${{ runner.os }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
