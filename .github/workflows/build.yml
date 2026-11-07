@@ -41,14 +41,10 @@ jobs:
       - name: Build with PyInstaller
         run: python -m PyInstaller --noconfirm patcheur_auto.spec
 
-      - name: Include patch and tool folders
-        run: >-
-          python -c "import shutil; from pathlib import Path; output = Path('dist'); [shutil.copytree(folder, output / folder, dirs_exist_ok=True, ignore=shutil.ignore_patterns('.gitkeep')) for folder in ('patch', 'tool') if Path(folder).is_dir()]"
-
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: patcher-${{ runner.os }}
+          name: DT_patcheur_${{ runner.os }}
           path: dist/
           if-no-files-found: error
           retention-days: 14
