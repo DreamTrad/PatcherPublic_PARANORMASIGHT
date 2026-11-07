@@ -1,4 +1,5 @@
 import os
+import platform
 import shutil
 import sys
 
@@ -6,7 +7,7 @@ sys.path.append(os.path.abspath("."))
 
 from patcher import config
 
-exe_name = getattr(config, "EXE_NAME", "Patcheur Auto")
+exe_name = getattr(config, "EXE_NAME", f"DT_patcheur-{platform.system()}")
 
 dist_dir = "dist"
 
